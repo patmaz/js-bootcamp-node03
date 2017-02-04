@@ -24,6 +24,9 @@ function start() {
             case '/js':
                 routes.js(req, res);
                 break;
+            case '/css':
+                routes.css(req, res);
+                break;
             default:
                 routes.error(req, res);
                 break;
