@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function(){
-    var dropZone = document.querySelector('#drop-zone'),
-        dropZoneWrapper = document.querySelector('#drop-zone-wrapper'),
-        dropZoneSpan = dropZoneWrapper.querySelector('.drop-zone__span');
+    var dropZone = document.getElementById('drop-zone'),
+        dropZoneWrapper = document.getElementById('drop-zone-wrapper'),
+        dropZoneSpan = dropZoneWrapper.querySelector('.drop-zone__span'),
+        sendBtn = document.getElementById('sendBtn'),
+        chat = document.getElementById('chat');
 
     dropZone.addEventListener('dragenter', function(e){
         dropZoneWrapper.classList.add('js-cursor-is-over');
@@ -18,5 +20,19 @@ document.addEventListener('DOMContentLoaded', function(){
         dropZoneSpan.innerHTML = "Yummy!";
         dropZoneWrapper.classList.remove('js-cursor-is-over');
         dropZoneWrapper.classList.add('js-dropped');
+    });
+
+    var ws = new WebSocket('ws://localhost:9000/', 'echo-protocol');
+
+    sendBtn.addEventListener('click', function(){
+        var message = document.getElementById('msg').value;
+        ws.send(message);
+    });
+    ws.addEventListener("message", function(e) {
+    // The data is simply the message that we're sending back
+        var msg = e.data;
+
+        // Append the message
+        chat.innerHTML += '<br>' + msg;
     });
 });
