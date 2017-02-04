@@ -21,6 +21,9 @@ function start() {
             case '/show':
                 routes.show(req, res);
                 break;
+            case '/js':
+                routes.js(req, res);
+                break;
             default:
                 routes.error(req, res);
                 break;
