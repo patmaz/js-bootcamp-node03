@@ -67,6 +67,17 @@ function js(req, res){
     });
 }
 
+function css(req, res){
+    var cssPath = './templates/css/' + url.parse(req.url).query.slice(5);
+    console.log('CSS request: '.blue, cssPath);
+    fs.readFile(cssPath, 'utf-8', function(err, data){
+        if (err) throw err;
+        res.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
+        res.write(data);
+        res.end();
+    });
+}
+
 function error(req, res){
     console.log('Fuckup'.red);
     res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'});
@@ -79,5 +90,6 @@ module.exports = {
     welcome: welcome,
     show: show,
     js: js,
+    css: css,
     error: error
 }

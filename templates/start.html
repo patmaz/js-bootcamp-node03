@@ -2,45 +2,9 @@
 <head>
     <meta charset="UTF-8">
     <title>START</title>
+    <link rel="stylesheet" href="/css?file=style.css" type="text/css" />
 </head>
 <body>
-<style>
-    body {
-        text-align: center;
-    }
-    #drop-zone-wrapper {
-        display: block;
-        width: 200px;
-        height: 200px;
-        border: 1px solid #000;
-        border-radius: 50%;
-        margin: 0 auto;
-        position: relative;
-        z-index: 2;
-    }
-    #drop-zone-wrapper .drop-zone__span {
-        margin-top: 87px;
-        display: block;
-    }
-    #drop-zone {
-        opacity: 0;
-        display: block;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-    #drop-zone-wrapper.js-cursor-is-over {
-        border: 1px solid red;
-        background-color: #E0E0E0;
-    }
-    #drop-zone-wrapper.js-dropped {
-        border: 1px solid red;
-        background-color: green;
-    }
-</style>
     <h1>Upload</h1>
     <form action="/upload" enctype="multipart/form-data" method="post">
         <label for="name">new file name</label>
