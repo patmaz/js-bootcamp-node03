@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
     var dropZone = document.getElementById('drop-zone'),
         dropZoneWrapper = document.getElementById('drop-zone-wrapper'),
-        dropZoneSpan = dropZoneWrapper.querySelector('.drop-zone__span'),
-        sendBtn = document.getElementById('sendBtn'),
-        chat = document.getElementById('chat');
+        dropZoneSpan = dropZoneWrapper.querySelector('.drop-zone__span');
 
     dropZone.addEventListener('dragenter', function(e){
         dropZoneWrapper.classList.add('js-cursor-is-over');
@@ -20,16 +18,5 @@ document.addEventListener('DOMContentLoaded', function(){
         dropZoneSpan.innerHTML = "Yummy!";
         dropZoneWrapper.classList.remove('js-cursor-is-over');
         dropZoneWrapper.classList.add('js-dropped');
-    });
-
-    var ws = new WebSocket('ws://localhost:9000/', 'echo-protocol');
-
-    sendBtn.addEventListener('click', function(){
-        var message = document.getElementById('msg').value;
-        ws.send(message);
-    });
-    ws.addEventListener("message", function(e) {
-        var msg = e.data;
-        chat.innerHTML += '<br>' + msg;
     });
 });

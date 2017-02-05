@@ -3,7 +3,7 @@ var colors = require('colors');
 var server = http.createServer();
 var routes = require('./routes');
 var url = require("url");
-var WebSocketServer = require('websocket').server;
+var wsServer = require('./wsServer');
 
 function start() {
     function onRequest(req, res){
@@ -15,6 +15,9 @@ function start() {
             case '/': // / equals start
             case '/start':
                 routes.welcome(req, res);
+                break;
+            case '/chat':
+                routes.chat(req, res);
                 break;
             case '/upload':
                 routes.upload(req, res);
@@ -39,37 +42,8 @@ function start() {
     console.log('Servers serves :)'.green);
 }
 
-function websocket() {
-    wsServer = new WebSocketServer({
-        httpServer: server
-    });
-
-    var count = 0;
-    var clients = {};
-
-    wsServer.on('request', function(req){
-        var connection = req.accept('echo-protocol', req.origin);
-        var id = count++;
-        clients[id] = connection;
-        console.log((new Date()) + ' Connection accepted [' + id + ']');
-
-        connection.on('message', function(message) {
-
-            var msgString = message.utf8Data;
-
-            for(var i in clients){
-                clients[i].sendUTF(msgString);
-            }
-        });
-
-        connection.on('close', function(reasonCode, description) {
-            delete clients[id];
-            console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
-        });
-    });
-}
+wsServer.websocket(server);
 
 module.exports = {
     start: start,
-    websocket: websocket
 }
