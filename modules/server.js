@@ -25,6 +25,9 @@ function start() {
             case '/show':
                 routes.show(req, res);
                 break;
+            case '/notnice':
+                routes.notnice(req, res);
+                break;
             case '/js':
                 routes.js(req, res);
                 break;

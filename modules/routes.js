@@ -67,6 +67,17 @@ function chat(req, res){
     });
 }
 
+function notnice(req, res){
+    console.log('Rude request');
+    fs.readFile('./templates/notnice.html', 'utf-8', function(err, data){
+        var renderedHtml = ejs.render(data);
+
+        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+        res.write(renderedHtml);
+        res.end();
+    });
+}
+
 function js(req, res){
     var jsPath = './templates/js/' + url.parse(req.url).query.slice(5);
     console.log('JS request: '.blue, jsPath);
@@ -101,6 +112,7 @@ module.exports = {
     welcome: welcome,
     show: show,
     chat: chat,
+    notnice: notnice,
     js: js,
     css: css,
     error: error
