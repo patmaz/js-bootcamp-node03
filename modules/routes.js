@@ -5,15 +5,20 @@ var url = require('url');
 var path = require('path');
 var ejs = require('ejs');
 
-function welcome(req, res){
+function start(req, res){
     console.log('Welcome request'.blue);
-    fs.readFile('./templates/start.html', 'utf-8', function(err, data){
-        var renderedHtml = ejs.render(data);
+    try {
+        fs.readFile('./templates/start.html', 'utf-8', function(err, data){
+            if (err) throw err;
+            var renderedHtml = ejs.render(data);
 
-        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-        res.write(renderedHtml);
-        res.end();
-    });
+            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+            res.write(renderedHtml);
+            res.end();
+        });
+    } catch(err) {
+        console.error(err);
+    }
 }
 
 function upload(req, res){
@@ -34,13 +39,18 @@ function upload(req, res){
             console.log('file uploaded: ', file.name);
         })
         .on('end', function(){
-            fs.readFile('./templates/uploaded.html', 'utf-8', function(err, data){
-                var renderedHtml = ejs.render(data, {image: newName});
+            try {
+                fs.readFile('./templates/uploaded.html', 'utf-8', function(err, data){
+                    if (err) throw err;
+                    var renderedHtml = ejs.render(data, {image: newName});
 
-                res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-                res.write(renderedHtml);
-                res.end();
-            });
+                    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                    res.write(renderedHtml);
+                    res.end();
+                });
+            } catch(err) {
+                console.error(err);
+            }
         });
     form.parse(req);
 }
@@ -48,45 +58,62 @@ function upload(req, res){
 function show(req, res){
     var imgPath = './uploads/' + url.parse(req.url).query.slice(4);
     console.log('Show request: '.blue, imgPath);
-    fs.readFile(imgPath, function(err, data){
-        if (err) throw err;
-        res.writeHead(200, {'Content-Type': 'image/gif'});
-        res.write(data, 'binary');
-        res.end();
-    });
+    try {
+        fs.readFile(imgPath, function(err, data){
+            if (err) throw err;
+            res.writeHead(200, {'Content-Type': 'image/gif'});
+            res.write(data, 'binary');
+            res.end();
+        });
+    } catch(err) {
+        console.error(err);
+    }
 }
 
 function chat(req, res){
-    console.log('Chat request');
-    fs.readFile('./templates/chat.html', 'utf-8', function(err, data){
-        var renderedHtml = ejs.render(data);
+    console.log('Chat request'.blue);
+    try {
+        fs.readFile('./templates/chat.html', 'utf-8', function(err, data){
+            if (err) throw err;
+            var renderedHtml = ejs.render(data);
 
-        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-        res.write(renderedHtml);
-        res.end();
-    });
+            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+            res.write(renderedHtml);
+            res.end();
+        });
+    } catch(err) {
+        console.error(err);
+    }
 }
 
 function js(req, res){
     var jsPath = './templates/js/' + url.parse(req.url).query.slice(5);
     console.log('JS request: '.blue, jsPath);
-    fs.readFile(jsPath, 'utf-8', function(err, data){
-        if (err) throw err;
-        res.writeHead(200, {'Content-Type': 'text/javascript; charset=utf-8'});
-        res.write(data);
-        res.end();
-    });
+    try {
+        fs.readFile(jsPath, 'utf-8', function(err, data){
+            if (err) throw err;
+            res.writeHead(200, {'Content-Type': 'text/javascript; charset=utf-8'});
+            res.write(data);
+            res.end();
+        });
+    } catch(err) {
+        console.error(err);
+    }
 }
 
 function css(req, res){
     var cssPath = './templates/css/' + url.parse(req.url).query.slice(5);
     console.log('CSS request: '.blue, cssPath);
-    fs.readFile(cssPath, 'utf-8', function(err, data){
-        if (err) throw err;
-        res.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
-        res.write(data);
-        res.end();
-    });
+    try {
+        fs.readFile(cssPath, 'utf-8', function(err, data){
+            if (err) throw err;
+            res.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
+            res.write(data);
+            res.end();
+        });
+    } catch(err) {
+        console.error(err);
+    }
 }
 
 function error(req, res){
@@ -98,7 +125,7 @@ function error(req, res){
 
 module.exports = {
     upload: upload,
-    welcome: welcome,
+    start: start,
     show: show,
     chat: chat,
     js: js,

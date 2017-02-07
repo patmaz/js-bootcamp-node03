@@ -11,35 +11,24 @@ function start() {
 
         var route = url.parse(req.url).pathname;
 
-        switch (route) {
-            case '/': // / equals start
-            case '/start':
-                routes.welcome(req, res);
-                break;
-            case '/chat':
-                routes.chat(req, res);
-                break;
-            case '/upload':
-                routes.upload(req, res);
-                break;
-            case '/show':
-                routes.show(req, res);
-                break;
-            case '/js':
-                routes.js(req, res);
-                break;
-            case '/css':
-                routes.css(req, res);
-                break;
-            default:
+        (function(route, req, res){
+            if (route === '/') {
+                route = 'start';
+            } else {
+                route = route.substring(1);
+            }
+
+            try {
+                routes[route](req, res);
+            } catch (err) {
                 routes.error(req, res);
-                break;
-        }
+            }
+        })(route, req, res);
     }
 
     server.on('request', onRequest)
         .listen(9000);
-    console.log('Servers serves :)'.green);
+    console.log('Server serves :)'.green);
 }
 
 wsServer.websocket(server);
